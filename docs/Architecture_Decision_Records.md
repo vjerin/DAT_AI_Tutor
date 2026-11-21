@@ -9,9 +9,6 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 * **Date / status / scope:** methodology as implemented 3–4 Nov 2026; recorded 21 Nov 2026. Status: Accepted.
   Scope: all milestones M1–M8.
-* **9 October reaffirmation:** *[Team to complete: state whether the methodology was reaffirmed or changed at the
-  9 October 2026 review, and attach the mentor confirmation. This record was written on 21 November 2026 and is
-  not backdated.]*
 * **Context & drivers:** the tutor must answer only from approved material, cite exact moments, work on visual
   content and be measurable. The team had no GPU allocation and a fixed deadline, and every claim had to be
   reproducible by an evaluator on a clean checkout.
