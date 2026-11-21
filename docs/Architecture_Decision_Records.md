@@ -1,13 +1,12 @@
 # Architecture Decision Records — Project 4, Grounded Multimodal AI Tutor
 
-Records are listed in the order the decisions were taken. Decision dates are the dates the choice was made in the
-implementation; all records were written up on 21 November 2026. Superseded records are kept.
+Records are listed in the order the decisions were taken. Superseded records are kept.
 
 ---
 
 ## ADR-001 — Methodology record: retrieval-first tutor with an offline evaluation harness
 
-* **Date / status / scope:** methodology as implemented 3–4 Nov 2026; recorded 21 Nov 2026. Status: Accepted.
+* **Status / scope:** Accepted.
   Scope: all milestones M1–M8.
 * **Context & drivers:** the tutor must answer only from approved material, cite exact moments, work on visual
   content and be measurable. The team had no GPU allocation and a fixed deadline, and every claim had to be
@@ -30,7 +29,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-002 — Evidence unit as the core data model, segmented on slide boundaries
 
-* **Date / status / scope:** 3 Nov 2026. Accepted. M1, M3, M4.
+* **Status / scope:** Accepted. M1, M3, M4.
 * **Context & drivers:** citations, versioning, caching and evaluation all need a stable unit of evidence with a
   time span. Speech and slides must line up so that a cited moment shows the slide being discussed.
 * **Options considered:**
@@ -52,7 +51,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-003 — Hybrid retrieval with Reciprocal Rank Fusion and a reranker
 
-* **Date / status / scope:** 3 Nov 2026. Accepted. M2.
+* **Status / scope:** Accepted. M2.
 * **Context & drivers:** lecture questions mix exact terms (function names, error text) and paraphrased concepts.
   The scores of BM25, cosine similarity and image–text similarity are not comparable.
 * **Options considered:**
@@ -74,7 +73,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-004 — Separate visual channel; OCR text as the default visual representation
 
-* **Date / status / scope:** 3–4 Nov 2026. Accepted. M1, M4.
+* **Status / scope:** Accepted. M1, M4.
 * **Context & drivers:** some answers exist only on screen. In mixed retrieval, transcript text tends to outrank
   visual evidence (Jeong et al., 2025). No GPU was available for image embeddings.
 * **Options considered:**
@@ -99,7 +98,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-005 — CPU-first default stack with pluggable model adapters
 
-* **Date / status / scope:** 3 Nov 2026. Accepted. All components.
+* **Status / scope:** Accepted. All components.
 * **Context & drivers:** no GPU, no paid API budget, and the evaluator must reproduce results on a laptop.
 * **Options considered:** (1) API-first (hosted LLM and embeddings); (2) GPU open-model stack only; (3) CPU
   default with adapters for GPU and API models selected by configuration.
@@ -115,7 +114,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-006 — Extractive generator as the default; LLM generation through plain HTTP
 
-* **Date / status / scope:** 3 Nov 2026. Accepted. M3.
+* **Status / scope:** Accepted. M3.
 * **Context & drivers:** answers must be cited per sentence and must not contain unsupported claims; no LLM was
   available for the reported runs.
 * **Options considered:** (1) local LLM via vendor SDK; (2) extractive answers built from evidence sentences and
@@ -134,7 +133,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-007 — Abstention from evidence-coverage features, with an optional calibrator
 
-* **Date / status / scope:** 4 Nov 2026. Accepted. M6.
+* **Status / scope:** Accepted. M6.
 * **Context & drivers:** unsupported questions must be declined; extractive answers are always "supported" by
   their own source, so support checks alone do not detect off-topic questions.
 * **Options considered:** (1) threshold on the top retrieval score; (2) ask the generator whether it can answer;
@@ -154,7 +153,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-008 — Content-hash versioning and a version-aware answer cache
 
-* **Date / status / scope:** 3 Nov 2026. Accepted. M1, M6.
+* **Status / scope:** Accepted. M1, M6.
 * **Context & drivers:** course material changes; stale evidence must not be presented as current.
 * **Options considered:** (1) overwrite the index on update; (2) time-based cache expiry; (3) content-hash
   versions that supersede, never overwrite, plus a cache with reverse indexes from source and memory item to
@@ -170,7 +169,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-009 — Rule-based memory policy, separate from the model
 
-* **Date / status / scope:** 4 Nov 2026. Accepted. M5.
+* **Status / scope:** Accepted. M5.
 * **Context & drivers:** learner data is personal; it must be selective, correctable and deletable.
 * **Options considered:** (1) replay all past conversations; (2) model-managed memory as in MemGPT (Packer et al.,
   2023); (3) an extractor that proposes operations and a rule engine that decides: goals only when stated,
@@ -185,7 +184,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-010 — Layered injection defences and a targeted red team
 
-* **Date / status / scope:** 4 Nov 2026. Accepted. M7.
+* **Status / scope:** Accepted. M7.
 * **Context & drivers:** transcripts, slide text and OCR are untrusted input.
 * **Options considered:** (1) prompt instructions only; (2) a classifier on every chunk; (3) layers: pattern
   screening at ingestion with quarantine, instruction/data separation in the prompt, output scrubbing of unknown
@@ -203,7 +202,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-011 — SQLite and in-memory vector indexes
 
-* **Date / status / scope:** 3 Nov 2026. Accepted. M1, M5.
+* **Status / scope:** Accepted. M1, M5.
 * **Context & drivers:** the evaluator must run the system without installing services.
 * **Options considered:** (1) PostgreSQL + Qdrant/OpenSearch; (2) SQLite + numpy flat search.
 * **Decision & rationale:** option 2. No setup, single-file reset, adequate for a few courses (index 0.25 MB here).
@@ -215,7 +214,7 @@ implementation; all records were written up on 21 November 2026. Superseded reco
 
 ## ADR-012 — Evaluation methodology
 
-* **Date / status / scope:** 3–4 Nov 2026; held-out split added 21 Nov 2026. Accepted. M7, M8.
+* **Status / scope:** Accepted. M7, M8.
 * **Context & drivers:** results must be reproducible, cover every milestone and include an unseen case.
 * **Options considered:** (1) public benchmarks only; (2) a generated course with known ground truth plus a
   held-out lecture; (3) a real OCW course with hand-labelled questions.
