@@ -1,0 +1,11 @@
+file 'slide01.png'
+duration 7.620
+file 'slide02.png'
+duration 16.980
+file 'slide03.png'
+duration 12.300
+file 'slide04.png'
+duration 18.780
+file 'slide05.png'
+duration 9.420
+file 'slide05.png'

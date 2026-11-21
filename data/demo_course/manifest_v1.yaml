@@ -1,0 +1,16 @@
+course: gd101
+title: Optimisation for Machine Learning (demo)
+licence: CC BY 4.0 (synthetic demo)
+lectures:
+- id: lec01
+  title: Gradient descent basics
+  video: lec01_v1/lecture.mp4
+  transcript: lec01_v1/transcript.json
+- id: lec02
+  title: Training neural networks in code
+  video: lec02/lecture.mp4
+  transcript: lec02/transcript.json
+- id: lec03
+  title: Overfitting and regularisation
+  video: lec03/lecture.mp4
+  transcript: lec03/transcript.json
