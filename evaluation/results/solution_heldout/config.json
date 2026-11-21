@@ -1,0 +1,124 @@
+{
+  "name": "default",
+  "ingest": {
+    "frame_fps": 1.0,
+    "slide_change_threshold": 0.01,
+    "min_slide_ms": 2000,
+    "ocr": "tesseract",
+    "captioner": "none",
+    "asr": "transcript",
+    "asr_model": "large-v3",
+    "segment_policy": "slide",
+    "fixed_window_ms": 30000,
+    "max_segment_ms": 90000,
+    "min_segment_ms": 6000,
+    "scan_injection": true
+  },
+  "index": {
+    "dense": "lsa",
+    "dense_model": "BAAI/bge-m3",
+    "query_prefix": "",
+    "lsa_dims": 128,
+    "visual": "text_proxy",
+    "visual_model": "clip-ViT-B-32"
+  },
+  "retrieval": {
+    "channels": [
+      "sparse",
+      "dense",
+      "visual"
+    ],
+    "k_sparse": 50,
+    "k_dense": 50,
+    "k_visual": 20,
+    "rrf_k": 60,
+    "class_weights": {
+      "exact_term": {
+        "sparse": 1.5,
+        "dense": 1.0,
+        "visual": 0.8
+      },
+      "visual": {
+        "sparse": 1.0,
+        "dense": 1.0,
+        "visual": 1.6
+      }
+    },
+    "weighted_rrf": true,
+    "reranker": "lexical",
+    "reranker_model": "BAAI/bge-reranker-v2-m3",
+    "rerank_top_n": 30,
+    "final_k": 6,
+    "include_superseded": false,
+    "drop_flagged": true
+  },
+  "classifier": {
+    "type": "rules",
+    "path": null
+  },
+  "rewrite": {
+    "type": "heuristic"
+  },
+  "generator": {
+    "type": "extractive",
+    "max_sentences": 3,
+    "min_sentence_score": 0.25
+  },
+  "llm": {
+    "provider": "openai_compatible",
+    "base_url": "http://localhost:8000/v1",
+    "model": "Qwen/Qwen3-8B",
+    "api_key_env": "OPENAI_API_KEY",
+    "temperature": 0.0,
+    "max_tokens": 700,
+    "timeout_s": 120,
+    "vision": false
+  },
+  "verifier": {
+    "type": "lexical",
+    "nli_model": "MoritzLaurer/DeBERTa-v3-large-mnli-fever-anli-ling-wanli",
+    "support_threshold": 0.6,
+    "drop_unsupported": true
+  },
+  "abstention": {
+    "type": "heuristic",
+    "path": null,
+    "answer_threshold": 0.55,
+    "qualify_threshold": 0.35
+  },
+  "guard": {
+    "type": "heuristic",
+    "model": "meta-llama/Llama-Prompt-Guard-2-86M",
+    "threshold": 0.5
+  },
+  "memory": {
+    "enabled": true,
+    "extractor": "rules",
+    "ephemeral_ttl_s": 86400,
+    "min_confidence": 0.6,
+    "misconception_min_observations": 2,
+    "goal_requires_explicit": true,
+    "ttl_days": {
+      "goal": 120,
+      "mastery": 180,
+      "misconception": 45,
+      "preference": 365
+    },
+    "allowed_types": [
+      "goal",
+      "mastery",
+      "misconception",
+      "preference"
+    ],
+    "max_profile_items": 5,
+    "bkt": {
+      "p_init": 0.2,
+      "p_learn": 0.15,
+      "p_slip": 0.1,
+      "p_guess": 0.2
+    }
+  },
+  "cache": {
+    "enabled": true
+  }
+}

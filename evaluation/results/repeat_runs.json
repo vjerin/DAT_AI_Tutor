@@ -1,0 +1,50 @@
+{
+  "runs": [
+    {
+      "run": 1,
+      "correct": 0.7931,
+      "recall@5": 1.0,
+      "abstained_ok": 1.0,
+      "p50_ms": 2.8,
+      "p95_ms": 3.8
+    },
+    {
+      "run": 2,
+      "correct": 0.7931,
+      "recall@5": 1.0,
+      "abstained_ok": 1.0,
+      "p50_ms": 2.8,
+      "p95_ms": 3.5
+    },
+    {
+      "run": 3,
+      "correct": 0.7931,
+      "recall@5": 1.0,
+      "abstained_ok": 1.0,
+      "p50_ms": 2.8,
+      "p95_ms": 3.6
+    }
+  ],
+  "aggregate": {
+    "correct": {
+      "mean": 0.7931,
+      "stdev": 0.0
+    },
+    "recall@5": {
+      "mean": 1.0,
+      "stdev": 0.0
+    },
+    "abstained_ok": {
+      "mean": 1.0,
+      "stdev": 0.0
+    },
+    "p50_ms": {
+      "mean": 2.8,
+      "stdev": 0.0
+    },
+    "p95_ms": {
+      "mean": 3.6333333333333333,
+      "stdev": 0.12472191289246462
+    }
+  }
+}

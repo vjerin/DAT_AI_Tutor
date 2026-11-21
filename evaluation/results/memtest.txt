@@ -1,0 +1,20 @@
+PASS  goal_stored  Goal: pass the mid-term on optimisation
+PASS  goal_in_profile  
+PASS  no_inferred_goal  
+PASS  misconception_pending_after_one  
+PASS  pending_not_in_profile  
+PASS  misconception_active_after_two  
+PASS  sensitive_rejected  
+PASS  preference_stored  
+PASS  mastery_updates  0.17575757575757575 -> 0.5662288930581614
+PASS  correction_applied  
+PASS  old_value_scrubbed  
+PASS  spoken_correction  
+PASS  deleted_unrecoverable  durable + audit + session
+PASS  delete_notifies_cache  
+PASS  spoken_delete  
+PASS  misconception_expires  
+PASS  session_expires  
+PASS  delete_learner  
+
+18/18 memory scenarios passed

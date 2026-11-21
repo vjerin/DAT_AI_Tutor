@@ -1,0 +1,15 @@
+python 3.13.18
+platform Linux-6.18.44-fc-v726-x86_64-with-glibc2.39
+machine x86_64 cpus 2
+numpy 2.5.3
+scikit-learn 1.9.1
+pillow 12.3.0
+pyyaml 6.0.3
+pydantic 2.13.5
+fastapi 0.162.0
+uvicorn 0.54.0
+httpx 0.28.1
+pytest 9.1.1
+ffmpeg ffmpeg version 6.1.1-3ubuntu5 Copyright (c) 2000-2023 the FFmpeg developers
+tesseract tesseract 5.3.4
+seeds pipeline is deterministic; bootstrap seed=0; red-team seed=0
