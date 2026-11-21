@@ -1,6 +1,8 @@
 # Grounded multimodal AI tutor
 
-CS5903 (DAT) Project 4. A course tutor that answers only from public lecture material, cites the exact moment in
+CS5903 (DAT) — Project 4, Group 30 — Jerin Varghese (CS24MTECH15023).
+
+A course tutor that answers only from public lecture material, cites the exact moment in
 the lecture video (or the slide / code frame) behind each sentence, declines questions the material does not cover,
 does not serve superseded content as current, and keeps learner memory under explicit rules. An evaluation
 harness measures all of this, including prompt-injection attacks.
