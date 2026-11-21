@@ -1,0 +1,16 @@
+# Template for a real course. Download the MP4s and captions from the course page
+# (MIT OpenCourseWare offers both), keep them next to this file, and check the licence.
+course: mit6xxx
+title: <Course title>
+licence: CC BY-NC-SA 4.0
+lectures:
+  - id: lec01
+    title: <Lecture 1 title>
+    video: media/lec01.mp4
+    transcript: media/lec01.srt          # .srt / .vtt / .json; omit and set ingest.asr=faster_whisper to transcribe
+    slides_pdf: media/lec01_slides.pdf   # optional (needs pymupdf)
+    url: https://www.youtube.com/watch?v=<id>   # optional: citations then deep-link to the public video
+  - id: lec02
+    title: <Lecture 2 title>
+    video: media/lec02.mp4
+    transcript: media/lec02.srt

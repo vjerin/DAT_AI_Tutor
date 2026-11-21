@@ -1,0 +1,18 @@
+# Offline default: runs on a laptop CPU with no model downloads.
+# BM25 + LSA dense + OCR-text visual channel, lexical reranker, extractive generator.
+name: default
+ingest:
+  ocr: tesseract
+  captioner: none
+  asr: transcript
+index:
+  dense: lsa
+  visual: text_proxy
+retrieval:
+  reranker: lexical
+generator:
+  type: extractive
+verifier:
+  type: lexical
+abstention:
+  type: heuristic

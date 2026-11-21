@@ -1,0 +1,28 @@
+# Recommended model stack (GPU recommended). Requires:
+#   pip install -r requirements-models.txt
+#   vllm serve Qwen/Qwen2.5-VL-7B-Instruct --port 8000   (or any OpenAI-compatible endpoint)
+base: default.yaml
+name: thorough
+ingest:
+  ocr: paddle
+  captioner: vlm
+index:
+  dense: sentence_transformers
+  dense_model: BAAI/bge-m3
+  visual: clip
+  visual_model: clip-ViT-B-32
+retrieval:
+  reranker: cross_encoder
+  reranker_model: BAAI/bge-reranker-v2-m3
+generator:
+  type: llm
+llm:
+  provider: openai_compatible
+  base_url: http://localhost:8000/v1
+  model: Qwen/Qwen2.5-VL-7B-Instruct
+  api_key_env: OPENAI_API_KEY
+  vision: true
+verifier:
+  type: nli
+guard:
+  type: prompt_guard

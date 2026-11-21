@@ -1,0 +1,18 @@
+# Working baseline: text-only RAG. BM25 over transcripts, no reranker, no verifier,
+# generator never abstains, no slides, no injection screening.
+base: default.yaml
+name: baseline
+retrieval:
+  channels: [sparse]
+  modalities: [transcript]
+  reranker: none
+  drop_flagged: false
+verifier:
+  type: none
+abstention:
+  answer_threshold: 0.0
+  qualify_threshold: 0.0
+guard:
+  type: none
+ingest:
+  scan_injection: false

@@ -1,0 +1,6 @@
+# E2: fixed 30 s windows instead of slide-bounded segments (needs re-ingestion: use sweep --manifests)
+base: default.yaml
+name: fixed30
+ingest:
+  segment_policy: fixed
+  fixed_window_ms: 30000

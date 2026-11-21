@@ -1,0 +1,9 @@
+# E6: all injection defences off
+base: default.yaml
+name: no_defence
+guard:
+  type: none
+ingest:
+  scan_injection: false
+retrieval:
+  drop_flagged: false

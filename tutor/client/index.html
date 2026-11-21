@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Course Tutor</title>
+<style>
+  :root { --bg:#f6f7f9; --panel:#fff; --ink:#1d2433; --muted:#667085; --line:#e3e6ea; --accent:#2f5aa8; --ok:#1f7a4d; --warn:#9a6700; --bad:#b42318; }
+  * { box-sizing: border-box; }
+  body { margin:0; font: 15px/1.5 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:var(--ink); background:var(--bg); }
+  header { padding:12px 20px; border-bottom:1px solid var(--line); background:var(--panel); display:flex; gap:16px; align-items:center; }
+  header h1 { font-size:17px; margin:0; }
+  header .muted { color:var(--muted); font-size:13px; }
+  main { display:grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap:16px; padding:16px; }
+  @media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+  .panel { background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  video { width:100%; border-radius:8px; background:#000; aspect-ratio:16/9; }
+  #evidence img { max-width:100%; border:1px solid var(--line); border-radius:6px; margin-top:8px; }
+  #chat { height: 52vh; overflow-y:auto; display:flex; flex-direction:column; gap:10px; }
+  .msg { padding:10px 12px; border-radius:10px; max-width:95%; }
+  .user { background:#e8eefb; align-self:flex-end; }
+  .bot { background:#f2f4f7; }
+  .status { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+  .answered { color:var(--ok); } .qualified { color:var(--warn); } .abstained { color:var(--bad); }
+  .cite { display:inline-block; margin:2px 4px 0 0; padding:1px 8px; border:1px solid var(--accent); color:var(--accent); border-radius:999px; font-size:12px; cursor:pointer; background:#fff; }
+  .cite.sup { border-color:var(--warn); color:var(--warn); }
+  form { display:flex; gap:8px; margin-top:10px; }
+  input[type=text] { flex:1; padding:10px; border:1px solid var(--line); border-radius:8px; font:inherit; }
+  button { padding:9px 14px; border:0; border-radius:8px; background:var(--accent); color:#fff; font:inherit; cursor:pointer; }
+  button.ghost { background:#fff; color:var(--ink); border:1px solid var(--line); padding:4px 10px; font-size:13px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  td, th { border-bottom:1px solid var(--line); padding:6px 4px; text-align:left; vertical-align:top; }
+  .small { font-size:12px; color:var(--muted); }
+  details summary { cursor:pointer; color:var(--muted); font-size:12px; }
+  pre { white-space:pre-wrap; font-size:12px; background:#f8f9fb; padding:8px; border-radius:6px; max-height:240px; overflow:auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Course Tutor</h1>
+  <span class="muted">Answers only from course material, with timestamped evidence</span>
+  <span style="flex:1"></span>
+  <label class="small">Learner <input id="learner" type="text" value="demo-learner" style="width:140px;padding:4px"></label>
+</header>
+<main>
+  <section>
+    <div class="panel">
+      <video id="player" controls preload="metadata"></video>
+      <div id="evidence" class="small" style="margin-top:8px">Click a citation to jump to the supporting moment.</div>
+    </div>
+    <div class="panel" style="margin-top:16px">
+      <div style="display:flex;align-items:center;gap:8px"><strong>What the tutor remembers</strong><span style="flex:1"></span>
+        <button class="ghost" onclick="loadMemory()">Refresh</button>
+        <button class="ghost" onclick="forgetAll()">Forget everything</button></div>
+      <table id="memory"><tbody><tr><td class="small">Nothing stored yet.</td></tr></tbody></table>
+    </div>
+  </section>
+  <section class="panel">
+    <div id="chat"></div>
+    <form id="ask"><input id="q" type="text" placeholder="Ask about the lectures..." autocomplete="off"><button>Ask</button></form>
+  </section>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => (s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let currentMedia = null;
+
+function seek(c) {
+  const ev = $("#evidence");
+  ev.innerHTML = `<strong>${esc(c.label)}</strong>${c.superseded ? ' <span class="abstained">(older version)</span>' : ''}<br>${esc(c.excerpt)}` +
+    (c.frame_uri ? `<br><img src="${c.frame_uri}" alt="slide">` : "");
+  if (!c.link) return;
+  if (c.link.startsWith("/media/")) {
+    const [path, frag] = c.link.split("#t=");
+    const p = $("#player");
+    const go = () => { p.currentTime = Number(frag || 0); p.play().catch(()=>{}); };
+    if (currentMedia !== path) { currentMedia = path; p.src = path; p.addEventListener("loadedmetadata", go, {once:true}); }
+    else go();
+  } else {
+    window.open(c.link, "_blank", "noopener");
+  }
+}
+
+function render(r) {
+  const div = document.createElement("div");
+  div.className = "msg bot";
+  let html = `<div class="status ${r.status}">${r.status}${r.cached ? " · cached" : ""} · ${r.query_class} · conf ${r.confidence.toFixed(2)}</div>`;
+  if (r.status === "abstained") {
+    html += `<p>${esc(r.abstain_reason)}</p>`;
+    if (r.suggestions.length) html += `<div class="small">Closest material:</div>` + r.suggestions.map((c,i)=>`<span class="cite sup" data-s="${i}">${esc(c.label)}</span>`).join("");
+  } else {
+    if (r.status === "qualified") html += `<p class="small">Only partly supported by the course material.</p>`;
+    html += r.segments.map(s => `<p>${esc(s.text)} ` + s.citations.map(id => `<span class="cite" data-id="${esc(id)}">${esc(r.citations[id].label)}</span>`).join("") + `</p>`).join("");
+  }
+  html += `<details><summary>trace (${r.timings_ms.total ?? "?"} ms)</summary><pre>${esc(JSON.stringify({timings:r.timings_ms, features:r.trace.features, evidence:r.trace.evidence, memory_ops:r.trace.memory_ops, dropped:r.trace.dropped_segments}, null, 2))}</pre></details>`;
+  div.innerHTML = html;
+  div.querySelectorAll(".cite[data-id]").forEach(el => el.onclick = () => seek(r.citations[el.dataset.id]));
+  div.querySelectorAll(".cite[data-s]").forEach(el => el.onclick = () => seek(r.suggestions[Number(el.dataset.s)]));
+  $("#chat").appendChild(div);
+  $("#chat").scrollTop = 1e9;
+}
+
+$("#ask").onsubmit = async e => {
+  e.preventDefault();
+  const q = $("#q").value.trim(); if (!q) return;
+  $("#q").value = "";
+  const u = document.createElement("div"); u.className = "msg user"; u.textContent = q; $("#chat").appendChild(u);
+  const res = await fetch("/api/ask", {method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({question:q, learner_id:$("#learner").value})});
+  render(await res.json());
+  loadMemory();
+};
+
+async function loadMemory() {
+  const items = await (await fetch(`/api/memory/${encodeURIComponent($("#learner").value)}`)).json();
+  const tb = $("#memory tbody");
+  if (!items.length) { tb.innerHTML = `<tr><td class="small">Nothing stored yet.</td></tr>`; return; }
+  tb.innerHTML = `<tr><th>Type</th><th>What</th><th>Status</th><th></th></tr>` + items.map(m =>
+    `<tr><td>${m.type}</td><td>${esc(m.value)}</td><td class="small">${m.status}${m.observations>1?` · seen ${m.observations}×`:""}</td>
+     <td style="white-space:nowrap"><button class="ghost" onclick="editItem('${m.item_id}')">Correct</button>
+     <button class="ghost" onclick="delItem('${m.item_id}')">Delete</button></td></tr>`).join("");
+}
+async function editItem(id) {
+  const v = prompt("Correct this memory to:"); if (!v) return;
+  await fetch(`/api/memory/item/${id}`, {method:"PATCH", headers:{"content-type":"application/json"}, body: JSON.stringify({value:v})});
+  loadMemory();
+}
+async function delItem(id) { await fetch(`/api/memory/item/${id}`, {method:"DELETE"}); loadMemory(); }
+async function forgetAll() { await fetch(`/api/memory/${encodeURIComponent($("#learner").value)}`, {method:"DELETE"}); loadMemory(); }
+loadMemory();
+</script>
+</body>
+</html>

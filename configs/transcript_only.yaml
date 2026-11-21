@@ -1,0 +1,6 @@
+# E3 baseline: ignore everything on screen (no slide / code evidence)
+base: default.yaml
+name: transcript_only
+retrieval:
+  channels: [sparse, dense]
+  modalities: [transcript]

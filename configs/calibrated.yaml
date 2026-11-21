@@ -1,0 +1,6 @@
+# T5: learned abstention calibrator (create it with `tutor calibrate`)
+base: default.yaml
+name: calibrated
+abstention:
+  type: calibrated
+  path: workspace/models/abstain.pkl

@@ -1,0 +1,4 @@
+base: default.yaml
+name: hybrid_no_rerank
+retrieval:
+  reranker: none

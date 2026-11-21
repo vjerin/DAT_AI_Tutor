@@ -1,0 +1,14 @@
+# Offline retrieval + a hosted or local LLM for generation.
+#   OpenAI-compatible (vLLM / Ollama / OpenAI):  set base_url, model, api_key_env
+#   Anthropic: provider: anthropic, model: <model id>, api_key_env: ANTHROPIC_API_KEY
+base: default.yaml
+name: llm_api
+generator:
+  type: llm
+llm:
+  provider: openai_compatible
+  base_url: http://localhost:11434/v1     # Ollama default
+  model: qwen3:8b
+  api_key_env: OPENAI_API_KEY
+verifier:
+  type: lexical

@@ -1,0 +1,4 @@
+base: default.yaml
+name: bm25_only
+retrieval:
+  channels: [sparse]

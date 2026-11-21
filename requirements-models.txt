@@ -1,0 +1,11 @@
+# Optional model stack used by configs/thorough.yaml and the training scripts (GPU recommended)
+torch>=2.3
+sentence-transformers>=3.0      # BGE-M3 / Qwen3-Embedding, cross-encoder rerankers, CLIP
+transformers>=4.44              # NLI verifier, Prompt Guard
+datasets>=2.20                  # embedder fine-tuning
+peft>=0.11                      # optional LoRA fine-tuning
+faster-whisper>=1.0             # ASR with word timestamps
+pymupdf>=1.24                   # slide / notes PDFs
+paddleocr>=2.8                  # better OCR for slides and code
+paddlepaddle>=2.6
+# serve a local LLM / VLM separately, e.g.:  pip install vllm && vllm serve Qwen/Qwen2.5-VL-7B-Instruct

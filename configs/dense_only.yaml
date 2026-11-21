@@ -1,0 +1,4 @@
+base: default.yaml
+name: dense_only
+retrieval:
+  channels: [dense]
