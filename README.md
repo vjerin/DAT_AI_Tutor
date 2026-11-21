@@ -37,8 +37,8 @@ durable learner model. `tutor/api` serves a REST API and a small web client; `tu
 ## Setup
 
 ```bash
-git clone <repository-url> grounded-ai-tutor
-cd grounded-ai-tutor
+git clone https://github.com/vjerin/DAT_AI_Tutor.git
+cd DAT_AI_Tutor
 python3 -m venv .venv
 source .venv/bin/activate            # Windows: .venv\Scripts\activate
 pip install -r requirements-lock.txt # exact versions used for the reported results
